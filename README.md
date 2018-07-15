@@ -37,8 +37,8 @@ Typical setup for your own `package.json`:
   "babel": {
     "extends": "@loopmode/babel6-base/.babelrc"
   },
-  "eslint": {
-    "extends": "@loopmode/babel6-base/.eslintrc"
+  "eslintConfig": {
+    "extends": "@loopmode/react"
   },
   "prettier": {
     "extends": "@loopmode/babel6-base/.prettierrc"

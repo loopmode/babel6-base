@@ -78,6 +78,15 @@
     lodash "^4.2.0"
     to-fast-properties "^2.0.0"
 
+"@loopmode/eslint-config-react@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@loopmode/eslint-config-react/-/eslint-config-react-1.0.0.tgz#cfc6d413ac2353930c97856c55d28a3344ec5db4"
+  dependencies:
+    eslint-config-prettier "^2.6.0"
+    eslint-plugin-import "^2.7.0"
+    eslint-plugin-prettier "^2.3.1"
+    eslint-plugin-react "^7.3.0"
+
 abab@^1.0.0:
   version "1.0.4"
   resolved "https://registry.yarnpkg.com/abab/-/abab-1.0.4.tgz#5faad9c2c07f60dd76770f71cf025b62a63cfd4e"
@@ -2837,7 +2846,7 @@ restore-cursor@^2.0.0:
     onetime "^2.0.0"
     signal-exit "^3.0.2"
 
-rimraf@^2.2.8, rimraf@^2.6.1:
+rimraf@^2.2.8, rimraf@^2.6.1, rimraf@^2.6.2:
   version "2.6.2"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.6.2.tgz#2ed8150d24a16ea8651e6d6ef0f47c4158ce7a36"
   dependencies:
