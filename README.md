@@ -16,9 +16,9 @@ It contains
 
 Babel is configured with `babel-preset-env`, `babel-preset-react` an `babel-preset-stage-1` in the `.babelrc` file.
 
-There are also `.eslintrc` and `.prettierrc` files that suit my needs.
+There are also eslint and prettier configs that suit my needs.
 
-Typical setup for your own `package.json`:
+Typical setup for your `package.json`:
 
 ```javascript
 {
@@ -39,11 +39,11 @@ Typical setup for your own `package.json`:
   },
   "eslintConfig": {
     "extends": "@loopmode/react"
-  },
-  "prettier": {
-    "extends": "@loopmode/babel6-base/.prettierrc"
   }
 }
 
-```
+Typical setup for your `prettier.config.js`:
 
+```javascript
+module.exports = require('@loopmode/babel6-base/prettier.config');
+```
