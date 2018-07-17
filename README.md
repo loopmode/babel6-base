@@ -6,17 +6,11 @@ Common dependencies and build tools for babel6-based packages
 
 Install this package as a devDependency for a babel 6 setup.
 
-It contains
-
-- `babel` at version 6
-- `esdoc`
-- `eslint`
-- `prettier`
-- `rimraf`
+It contains `babel`, `esdoc`, `eslint` and `prettier`, as well as some plugins/extensions.
 
 Babel is configured with `babel-preset-env`, `babel-preset-react` an `babel-preset-stage-1` in the `.babelrc` file.
-
-There are also eslint and prettier configs that suit my needs.
+Decorator syntax is provided as well.
+There are also eslint and prettier configs.
 
 Typical setup for your `package.json`:
 
@@ -25,11 +19,9 @@ Typical setup for your `package.json`:
   "name": "my-package",
   "version": "0.0.1",
   "scripts": {
-    "clean": "rimraf lib/*",
-    "build": "rimraf lib/* && babel src --out-dir lib --copy-files",
-    "watch": "rimraf lib/* && babel src --out-dir lib --copy-files --watch",
+    "build": "babel src --out-dir lib --copy-files",
     "lint": "eslint src",
-    "lint:fix": "eslint src --fix"
+    "docs": "esdoc"
   },
   "devDependencies": {
     "@loopmode/babel6-base": "*"
