@@ -1,12 +1,8 @@
 module.exports = {
     title: 'my-package',
+    index: './README.md',
     source: './src',
     destination: './docs',
-    test: {
-        type: 'mocha',
-        source: './test',
-        includes: ['(spec|Spec|test|Test)\\.js$']
-    },
     coverage: true,
     includes: ['\\.js$'],
     excludes: [],
