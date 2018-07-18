@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/babel6-base",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Common dependencies and build tools for babel6-based packages",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
@@ -17,6 +17,8 @@
     "babel-preset-stage-1": "^6.24.1",
     "babel-register": "^6.24.1",
     "esdoc": "^0.5.2",
+    "esdoc-es7-plugin": "0.0.3",
+    "esdoc-importpath-plugin": "0.0.1",
     "eslint": "^4.7.2",
     "eslint-config-prettier": "^2.6.0",
     "eslint-plugin-import": "^2.7.0",
