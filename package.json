@@ -1,6 +1,6 @@
 {
   "name": "@loopmode/babel6-base",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Common dependencies and build tools for babel6-based packages",
   "author": "Jovica Aleksic <jovica.aleksic@loopmode.de>",
   "license": "MIT",
