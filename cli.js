@@ -4,7 +4,14 @@ const { prompt } = require('inquirer');
 const fs = require('fs-extra');
 const path = require('path');
 
-const availableFiles = ['.babelrc', '.editorconfig', '.eslintrc.js', '.esdoc.js', 'prettier.config.js'];
+const availableFiles = [
+    '.babelrc',
+    '.editorconfig',
+    '.eslintrc.js',
+    '.esdoc.js',
+    'prettier.config.js',
+    'project.sublime-project'
+];
 
 const availableScripts = {
     build: 'babel src --out-dir lib --copy-files',
