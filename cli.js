@@ -4,9 +4,9 @@ const { prompt } = require('inquirer');
 const fs = require('fs-extra');
 const path = require('path');
 
-const files = ['.babelrc', '.editorconfig', '.eslintrc.js', '.esdoc.config.js', 'prettier.config.js'];
+const availableFiles = ['.babelrc', '.editorconfig', '.eslintrc.js', '.esdoc.config.js', 'prettier.config.js'];
 
-const scripts = {
+const availableScripts = {
     build: 'babel src --out-dir lib --copy-files',
     lint: 'eslint src',
     docs: 'esdoc'
@@ -17,13 +17,13 @@ const questions = [
         message: 'What files would you like to create?',
         type: 'checkbox',
         name: 'files',
-        choices: files.map(file => ({ name: file, checked: true }))
+        choices: availableFiles.map(file => ({ name: file, checked: true }))
     },
     {
         message: 'What scripts would you like to add to package.json?',
         type: 'checkbox',
         name: 'scripts',
-        choices: Object.keys(scripts).map(script => ({ name: script, checked: true }))
+        choices: Object.keys(availableScripts).map(script => ({ name: script, checked: true }))
     }
 ];
 
@@ -37,6 +37,8 @@ program
     });
 
 async function install(dir, { files, scripts }) {
+    console.log(dir, files, scripts);
+
     // copy files
     if (files && files.length) {
         for (let file of files) {
@@ -56,7 +58,7 @@ async function install(dir, { files, scripts }) {
             Object.entries(scripts).forEach(([key, value]) => {
                 pkg.scripts[key] = value;
             });
-            await fs.writeJson(path.resolve(dir, 'package.json'), pkg);
+            await fs.writeJson(path.resolve(dir, 'package.json'), pkg, { spaces: 2 });
         } catch (error) {
             console.error('Failed installing scripts', error);
         }
