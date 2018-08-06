@@ -4,6 +4,8 @@ const { prompt } = require('inquirer');
 const fs = require('fs-extra');
 const path = require('path');
 
+const files = ['.babelrc', '.editorconfig', '.eslintrc.js', '.esdoc.config.js', 'prettier.config.js'];
+
 const scripts = {
     build: 'babel src --out-dir lib --copy-files',
     lint: 'eslint src',
@@ -15,19 +17,13 @@ const questions = [
         message: 'What files would you like to create?',
         type: 'checkbox',
         name: 'files',
-        choices: [
-            { name: '.babelrc', checked: true },
-            { name: '.editorconfig', checked: true },
-            { name: '.eslintrc.js', checked: true },
-            { name: '.esdoc.config.js', checked: true },
-            { name: 'prettier.config.js', checked: true }
-        ]
+        choices: files.map(file => ({ name: file, checked: true }))
     },
     {
         message: 'What scripts would you like to add to package.json?',
         type: 'checkbox',
         name: 'scripts',
-        choices: scripts.map(script => ({ name: script, checked: true }))
+        choices: Object.keys(scripts).map(script => ({ name: script, checked: true }))
     }
 ];
 
@@ -41,7 +37,6 @@ program
     });
 
 async function install(dir, { files, scripts }) {
-    console.log(dir, { files, scripts });
     // copy files
     if (files && files.length) {
         for (let file of files) {
