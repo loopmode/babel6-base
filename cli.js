@@ -37,7 +37,7 @@ program
     });
 
 async function install(dir, { files, scripts }) {
-    console.log(dir, files, scripts);
+    // console.log(dir, files, scripts);
 
     // copy files
     if (files && files.length) {
@@ -55,8 +55,8 @@ async function install(dir, { files, scripts }) {
         try {
             const pkg = require(path.resolve(dir, 'package.json'));
             pkg.scripts = pkg.scripts || {};
-            Object.entries(scripts).forEach(([key, value]) => {
-                pkg.scripts[key] = value;
+            scripts.forEach(name => {
+                pkg.scripts[name] = availableScripts[name];
             });
             await fs.writeJson(path.resolve(dir, 'package.json'), pkg, { spaces: 2 });
         } catch (error) {
