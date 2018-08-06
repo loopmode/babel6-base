@@ -1,7 +1,9 @@
 # babel6-base
 
-Common dependencies and default configurations for babel6-based packages.  
+Common dependencies and default configurations for babel6-based packages.
 Contains `babel`, `esdoc`, `eslint` and `prettier`, as well as some plugins/extensions in slightly outdated but stable versions.
+
+Provides CLI to copy default config files like `.eslintrc`, `prettier.config.js` etc
 
 ## Installation
 
@@ -11,14 +13,22 @@ Install as a devDependency.
   yarn add --dev @loopmode/babel6-base
 ```
 
+### Usage
+
+Use the CLI script to copy default config files. After installing, run
+
+```
+./node_modules/.bin/@loopmode/babel6-base install
+```
+
+
 ### Configuration
 
-There are default config files that you can use as a base and extend/modify as needed.  
-
+There are default config files that you can use as a base and extend/modify as needed.
 
 #### via config files
 
-Typically you'll create a bunch of config files and extend the provided defaults there.  
+Typically you'll create a bunch of config files and extend the provided defaults there.
 
 ```json
 // .babelrc
@@ -49,7 +59,7 @@ module.exports = {
   ...require('@loopmode/babel6-base/esdoc.config')
 }
 ```
- 
+
 
 #### via package.json
 
@@ -75,7 +85,7 @@ Alternatively, you can add keys to your `package.json`, but there are some cavea
 
 #### Caveats:
 
-- The eslint config [@loopmode/eslint-config-react](https://github.com/loopmode/eslint-config-react) is included as a dependency 
+- The eslint config [@loopmode/eslint-config-react](https://github.com/loopmode/eslint-config-react) is included as a dependency
 - When extending the eslint config, omit the `eslint-config-` part of the package name and use just `@loopmode/react` instead
 - When configuring eslint via package.json, the key must be `"eslintConfig"` (and not just `"eslint"`)
 - When configuring prettier or ESDoc via package.json, you can not extend from the default config - you have to provide a full configuration directly
@@ -86,7 +96,7 @@ Alternatively, you can add keys to your `package.json`, but there are some cavea
 - [esdoc configuration](https://github.com/esdoc/esdoc/blob/v0.5.2/site/manual/configuration/config.md#full-config)
 - [prettier configuration](https://prettier.io/docs/en/configuration.html)
 
-## Usage
+## Scripts
 
 Just add some scripts to your `package.json` as usual:
 
@@ -101,9 +111,9 @@ Just add some scripts to your `package.json` as usual:
 
 ```
 
-Pass any arguments to the scripts as usual, e.g. `yarn babel --watch`.  
+Pass any arguments to the scripts as usual, e.g. `yarn babel --watch`.
 
-Note that ESLint and prettier enforce specific code style, and you might get a bunch of warnings for existing projects.  
+Note that ESLint and prettier enforce specific code style, and you might get a bunch of warnings for existing projects.
 Use `yarn eslint --fix` to normalize code style and whitespace.
 
 Generate docs with `yarn esdoc`.
