@@ -30,7 +30,7 @@ Typically you'll create a bunch of config files and extend the provided defaults
 ```json
 // .eslintrc
 {
-  "extends": "@loopmode/babel6-base/.babelrc"
+  "extends": "@loopmode/react"
 }
 
 ```
@@ -108,3 +108,29 @@ Use `yarn eslint --fix` to normalize code style and whitespace.
 
 Generate docs with `yarn esdoc`.
 
+## Sublime Text
+
+Here is an example Sublime Text project file. It will automatically format saved files in the project, and ESLint errors will be displayed when `SublimeLinter` and `SublimeLinter-eslint` are installed.
+
+```json
+{
+    "folders":
+    [
+        {
+            "path": ".",
+            "file_exclude_patterns": [],
+            "folder_exclude_patterns": ["node_modules"]
+        }
+    ],
+    "settings":
+    {
+        "SublimeLinter.linters.eslint.chdir": "${project}/",
+        "js_prettier":
+        {
+            "auto_format_on_save": true,
+            "auto_format_on_save_excludes": ["*/node_modules/*", "*/.git/*", "*.json", "*.html"]
+        }
+    }
+}
+
+```
