@@ -18,7 +18,7 @@ Install as a devDependency.
 Use the CLI script to copy default config files. After installing, run
 
 ```
-./node_modules/.bin/@loopmode/babel6-base install
+./node_modules/.bin/babel6-base install
 ```
 
 
