@@ -1,5 +1,5 @@
 module.exports = {
-    title: 'my-package',
+    title: 'package-name',
     index: './README.md',
     source: './src',
     destination: './docs',
