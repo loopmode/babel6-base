@@ -47,7 +47,7 @@ const questions = [
 
 async function install(dir, { files, scripts, dependencies }) {
     if (files && files.length) {
-        await installFiles(dir, files);
+        await installFiles(dir, files, dependencies);
     }
 
     if (scripts && scripts.length) {
@@ -59,13 +59,25 @@ async function install(dir, { files, scripts, dependencies }) {
     }
 }
 
-async function installFiles(dir, files) {
+async function installFiles(dir, files, dependencyMode) {
     for (let file of files) {
         // ---------------------------------------
         // copy file
         // ---------------------------------------
-        const source = path.resolve(__dirname, '../files/', file);
+        // the source file
+        let source = path.resolve(__dirname, '../files/', file);
+        // if user chose indirect mode, we try to keep things simple in the target project
+        // if possible, we use a file that just extends a base config instead of using the verbose config
+        if (dependencyMode === DependencyMode.INDIRECT) {
+            const extendedSource = path.resolve(__dirname, '../files/extended', file);
+            if (await fs.exists(extendedSource)) {
+                source = extendedSource;
+            }
+        }
+        // the target location for the file
         const target = path.resolve(dir, file);
+
+        // perform copy operation
         try {
             await fs.copy(source, target);
         } catch (error) {
@@ -109,7 +121,6 @@ async function installDependencies(dir, mode) {
         const targetPackage = getPackage(dir);
 
         const missingDeps = getMissingDependencies(ownPackage, targetPackage, mode);
-        console.log('missingDeps', missingDeps);
         if (missingDeps.length > 0) {
             targetPackage.devDependencies = targetPackage.devDependencies || {};
             missingDeps.forEach(({ name, version }) => (targetPackage.devDependencies[name] = version));
@@ -151,13 +162,15 @@ function getMissingDependencies(ownPackage, targetPackage, mode) {
     switch (mode) {
         case DependencyMode.DIRECT:
             // install each dependency of this package as a dependency of the target package
-            console.log('>>', ownDeps);
             return ownDeps.filter(name => targetDeps.indexOf(name) === -1).map(name => ({
                 name: name,
                 version: ownPackage.dependencies[name]
             }));
         case DependencyMode.INDIRECT:
             // install only this package as a dependency
+            if (targetDeps.indexOf(ownPackage.name) > -1) {
+                return [];
+            }
             return [
                 {
                     name: ownPackage.name,
