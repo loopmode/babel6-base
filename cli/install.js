@@ -11,6 +11,13 @@ const supportedFiles = {
     sublime: 'project.sublime-project'
 };
 
+const supportedFilesExtended = {
+    babel: '.babelrc',
+    eslint: '.eslintrc',
+    esdoc: '.esdoc.js',
+    prettier: 'prettier.config.js'
+};
+
 const supportedScripts = {
     build: 'babel src --out-dir lib --copy-files',
     lint: 'eslint src',
@@ -25,19 +32,19 @@ const DependencyMode = {
 
 const questions = [
     {
-        message: 'What files would you like to create?',
+        message: 'Choose config files to create',
         type: 'checkbox',
         name: 'files',
-        choices: Object.values(supportedFiles).map(file => ({ name: file, checked: true }))
+        choices: Object.keys(supportedFiles).map(file => ({ name: file, checked: true }))
     },
     {
-        message: 'What scripts would you like to add to package.json?',
+        message: 'Choose scripts to add to package.json?',
         type: 'checkbox',
         name: 'scripts',
         choices: Object.keys(supportedScripts).map(script => ({ name: script, checked: true }))
     },
     {
-        message: 'Would you like to install the dependencies?',
+        message: 'Add dependencies?',
         type: 'list',
         name: 'dependencies',
         default: DependencyMode.INDIRECT,
@@ -46,7 +53,11 @@ const questions = [
 ];
 
 async function install(dir, { files, scripts, dependencies }) {
+    console.log('\n[b6] install');
+
     if (files && files.length) {
+        // keys to values
+        files = files.map(f => supportedFiles[f]);
         await installFiles(dir, files, dependencies);
     }
 
@@ -69,19 +80,22 @@ async function installFiles(dir, files, dependencyMode) {
         // if user chose indirect mode, we try to keep things simple in the target project
         // if possible, we use a file that just extends a base config instead of using the verbose config
         if (dependencyMode === DependencyMode.INDIRECT) {
-            const extendedSource = path.resolve(__dirname, '../files/extended', file);
-            if (await fs.exists(extendedSource)) {
-                source = extendedSource;
+            const [key] = Object.entries(supportedFiles).find(([key, value]) => value === file);
+            if (supportedFilesExtended[key]) {
+                source = path.resolve(__dirname, '../files/extended', supportedFilesExtended[key]);
+                file = supportedFilesExtended[key];
             }
         }
+
         // the target location for the file
         const target = path.resolve(dir, file);
 
         // perform copy operation
         try {
+            console.log(`[b6] copy file - "${source}" -> "${target}"`);
             await fs.copy(source, target);
         } catch (error) {
-            console.error(`Failed copying file ${source} to ${target}`);
+            console.error(`\nFailed copying file ${source} to ${target}`);
         }
 
         // ---------------------------------------
@@ -97,7 +111,7 @@ async function installFiles(dir, files, dependencyMode) {
                     });
             }
         } catch (error) {
-            console.error(`Failed post-processing file ${target}`);
+            console.error(`\nFailed post-processing file ${target}`);
         }
     }
 }
@@ -107,11 +121,12 @@ async function installScripts(dir, scripts) {
     try {
         pkg.scripts = pkg.scripts || {};
         scripts.forEach(name => {
+            console.log(`[b6] add script - "${name}": "${supportedScripts[name]}"`);
             pkg.scripts[name] = supportedScripts[name];
         });
         await fs.writeJson(path.resolve(dir, 'package.json'), pkg, { spaces: 2 });
     } catch (error) {
-        console.error('Failed installing scripts', error);
+        console.error('\nFailed installing scripts', error);
     }
 }
 
@@ -123,25 +138,22 @@ async function installDependencies(dir, mode) {
         const missingDeps = getMissingDependencies(ownPackage, targetPackage, mode);
         if (missingDeps.length > 0) {
             targetPackage.devDependencies = targetPackage.devDependencies || {};
-            missingDeps.forEach(({ name, version }) => (targetPackage.devDependencies[name] = version));
+            missingDeps.forEach(({ name, version }) => {
+                console.log(`[b6] add dependency - "${name}": "${version}"`);
+                targetPackage.devDependencies[name] = version;
+            });
             await fs.writeJson(path.resolve(dir, 'package.json'), targetPackage, { spaces: 2 });
 
-            if (missingDeps.length === 1) {
-                console.log(`Added 1 package to devDependencies`);
-            } else {
-                console.log(`Added ${missingDeps.length} packages to devDependencies`);
-            }
-            console.log('Please install the dependencies by executing "npm install" or "yarn install"');
+            console.log('\nPlease install the dependencies by executing "npm install" or "yarn install"');
         } else {
-            console.log('No missing dependencies found');
+            console.log('\nNo missing dependencies found');
         }
     } catch (error) {
-        console.error('Failed adding dependencies', error);
+        console.error('\nFailed adding dependencies', error);
     }
 }
 
 function getMissingDependencies(ownPackage, targetPackage, mode) {
-    console.log('getMissingDependencies', mode);
     const ownDeps = Object.keys(ownPackage.dependencies || {}).filter(dep => {
         switch (dep) {
             case 'commander':

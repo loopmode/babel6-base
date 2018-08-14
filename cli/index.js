@@ -11,13 +11,9 @@ program
     .alias('i')
     .description('Add boilerplate files and scripts to your project')
     .action(function(dir = process.cwd()) {
-        if (!fs.existsSync(path.resolve(dir, 'package.json'))) {
-            console.warn(`
-    ${path.resolve(dir)} doesn't seem to be a node.js project.
-
-    Please initialize first using "npm init" or "yarn init".
-    `);
-            throw new Error('No package.json found');
+        const pkg = path.resolve(dir, 'package.json');
+        if (!fs.existsSync(pkg)) {
+            printPackageWarning(pkg);
             process.exit(1);
         }
 
@@ -25,3 +21,11 @@ program
     });
 
 program.parse(process.argv);
+
+function printPackageWarning(pkg) {
+    console.warn(`\x1b[31m
+    ${pkg} not found
+ 
+    Please initialize first using "npm init" or "yarn init".
+    `);
+}

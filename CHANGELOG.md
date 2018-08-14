@@ -1,3 +1,9 @@
+### 0.3.2
+
+-   warn and exit when there is no package.json
+-   use `extended/.eslintrc` instead of `extended/.eslintrc.js`
+-   improved logging
+
 ### 0.3.1
 
 -   Use extended configs instead of verbose ones in indirect dependency mode
