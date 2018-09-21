@@ -1,3 +1,3 @@
 module.exports = {
-    ...require('@loopmode/babel6-base/prettier.config')
+    ...require('@loopmode/babel6-base/files/prettier.config')
 };

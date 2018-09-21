@@ -1,3 +1,7 @@
+### 0.3.3
+
+-   Update import paths in `files/extended`
+
 ### 0.3.2
 
 -   warn and exit when there is no package.json
