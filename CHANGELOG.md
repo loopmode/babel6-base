@@ -1,3 +1,7 @@
+### 0.3.4
+
+-   Update esdoc path in `files/extended/esdoc.js`
+
 ### 0.3.3
 
 -   Update import paths in `files/extended`
