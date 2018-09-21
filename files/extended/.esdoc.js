@@ -1,3 +1,3 @@
 module.exports = {
-    ...require('@loopmode/babel6-base/files/esdoc')
+    ...require('@loopmode/babel6-base/files/.esdoc')
 };
